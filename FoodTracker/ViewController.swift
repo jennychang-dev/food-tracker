@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         print("tapping")
         
         let iPC = UIImagePickerController()
-        iPC.delegate = self as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        iPC.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
         iPC.sourceType = .photoLibrary
         
         
