@@ -77,7 +77,6 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         
     }
     
-
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         // disable save button while editing

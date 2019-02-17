@@ -1,17 +1,19 @@
 import UIKit
+import os_object
 
 class MealTableViewController: UITableViewController {
 
     var meals = [Meal]()
     var meal: Meal!
+    var data: Data!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // goes into editing mode on its own!!
         navigationItem.leftBarButtonItem = editButtonItem
-        loadSampleMeals()
         
+        loadMeals()
     }
     
 //////////////////////////////////////////////////////////
@@ -27,6 +29,8 @@ class MealTableViewController: UITableViewController {
             meals.append(meal)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
+        
+        saveMeals()
         
     }
 
@@ -69,9 +73,9 @@ class MealTableViewController: UITableViewController {
         if editingStyle == .delete {
             meals.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // create a new instance
         }
+        
+        saveMeals()
     }
     
 //////////////////////////////////////////////////////////
@@ -105,4 +109,32 @@ class MealTableViewController: UITableViewController {
         
         meals.append(contentsOf: [meal1, meal2, meal3])
     }
+    
+//////////////////////////////////////////////////////////
+//    SAVING MEALS
+////////////////////////////////////////////////////////
+    
+    private func saveMeals() {
+        
+        do {
+            data = try NSKeyedArchiver.archivedData(withRootObject: meals, requiringSecureCoding: false)
+            try data.write(to: Meal.ArchiveURL)
+        } catch {
+            print("error!!!!")
+        }
+    }
+    
+//////////////////////////////////////////////////////////
+//    LOADING MEALS
+////////////////////////////////////////////////////////
+    
+    private func loadMeals()  {
+        
+        let dataURL = Meal.ArchiveURL
+        guard let codedData = try? Data(contentsOf: dataURL) else { return }
+        
+        meals = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Meal] ?? [Meal]()
+        
+    }
+
 }
