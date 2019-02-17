@@ -43,13 +43,10 @@ class Meal: NSObject, NSCoding {
 //    NSCoding methods
     
 //     1st - encode(with) - prepares the class's info to be archived
-    
-    
+
 //     2nd - init?(coder) - unarchives the data when the class is created
-    
-//     REQUIRED - initializer must be implemented on every subclass, if the subclass defines its own initializers
-    
-//     CONVENIENCE - this is a secondary initializer, and that it must call a designiation initializer from the same class
+//          REQUIRED - initializer must be implemented on every subclass, if the subclass defines its own initializers
+//          CONVENIENCE - this is a secondary initializer, and that it must call a designiation initializer from the same class
 ////////////////////////////////////////////////////////
     
     func encode(with aCoder: NSCoder) {
@@ -71,10 +68,5 @@ class Meal: NSObject, NSCoding {
         
         self.init(name: name, photo: photo, rating: rating)
     }
-    
-//////////////////////////////////////////////////////////
-//    Create a persistent path on the data where data will be saved and loaded
-////////////////////////////////////////////////////////
-    
-    
+
 }

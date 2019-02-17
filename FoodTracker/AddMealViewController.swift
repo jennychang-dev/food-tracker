@@ -119,6 +119,5 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         dismiss(animated: true, completion: nil)
     }
     
-
 }
 
