@@ -68,6 +68,8 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         meal = Meal(name: name, photo: photo, rating: rating, calories: caloriesInt ?? 0, details: details)
         let ctm = CloudTrackerManager()
         ctm.postMeal(meal: meal!)
+        
+        passInPhoto(image: foodPicView.image!)
     }
     
 //////////////////////////////////////////////////////////
@@ -126,7 +128,20 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         foodPicView.image = selectedImage
         
         dismiss(animated: true, completion: nil)
+
     }
+    
+    func passInPhoto(image: UIImage) {
+            let cloudtracker = CloudTrackerManager()
+        cloudtracker.uploadImageToImagur(image: image, completion: {
+            (result: String) in
+            
+            print(result)
+            
+        })
+    }
+    
+
     
 }
 

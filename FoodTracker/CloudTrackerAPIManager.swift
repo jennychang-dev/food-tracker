@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class CloudTrackerManager {
     
@@ -158,9 +159,9 @@ class CloudTrackerManager {
             if let data = responseData, let utf8Representation = String(data: data, encoding: .utf8) {
                 
                 print("response: ", utf8Representation)
-            
+                
                 guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]] else {
-                print("data returned is not json")
+                    print("data returned is not json")
                     return
                 }
                 
@@ -171,42 +172,53 @@ class CloudTrackerManager {
                     
                 }
                 completion("finished now print...")
-
+                
             }
-            print("TOTAL NUMBER OF MEALS IS \(self.meals.count)")
+            
+        }
+        
+        task.resume()
+        
+    }
+    
+    func uploadImageToImagur(image: UIImage, completion: @escaping (_ result: String) -> Void) {
+        
+        print("\n\n\n\n calling ON UPLOAD IMAGEE!!!!! \n\n\n\n\n")
+        guard let imageData = image.pngData() else {
+            fatalError("cannot comvert image to data")
+        }
+        
+        let imagurURL = "https://api.imgur.com/3/image"
+        let postURL = URL(string: imagurURL)
+        request = URLRequest(url: postURL!)
+        request.httpMethod = "POST"
+        
+        request.allHTTPHeaderFields = ["Authorization":"Client-ID 887c27b7d390539", "Content-Type": "application/json"]
+        
+        
+        request.httpBody = imageData
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with: request) { (responseData, response, responseError) in
+            guard responseError == nil else {
+                print("\(String(describing: responseError))")
+                return
+            }
+            
+            if let data = responseData, let utf8Representation = String(data: data, encoding: .utf8) {
+                print("response: ", utf8Representation)
+                
+                completion("https://i.imgur.com//DEdzdZw.png")
+            }
+            
         }
         
         task.resume()
         print("ATTEMPTING TO PERFORM TASK!!!!")
-        
-        
+
     }
     
-    }
+}
 
-//func takeMyDataAndReturnMeals(json: [[String: Any]]) {
-//
-//    var totalMeals
-//
-//    for meal in json {
-//        print(meal["calories"] ?? 0)
-//    }
-//
-//
-//
-//}
-
-//    func encodeData(bodyData: [String: String]) {
-//        let encoder = JSONEncoder()
-//
-//        do {
-//            let jsonData = try encoder.encode(bodyData)
-//            request.httpBody = jsonData
-//            print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
-//        } catch {
-//            print("\(error)")
-//        }
-//
-//    }
-    
 

@@ -57,9 +57,25 @@ class MealTableViewController: UITableViewController {
         
         let meal = meals[indexPath.row]
         
+        let url = URL(string: "https://i.imgur.com//DEdzdZw.png")
+        let sessionTask = URLSession.shared
+        let request = URLRequest(url: url!)
+        let task = sessionTask.dataTask(with: request) { (responseData, response, responseError) in
+        guard responseError == nil else {
+            print("\(String(describing: responseError))")
+            return
+        }
+            
+            if let data = responseData {
+                cell.photoImageView.image = UIImage(data: data)
+                cell.photoImageView.contentMode = .scaleToFill
+            }
+        }
+        
+        task.resume()
+        
         cell.nameLabel.text = meal.name
-        cell.photoImageView.image = meal.photo
-        cell.photoImageView.contentMode = .scaleToFill
+        
         cell.ratingControl.rating = meal.rating
         
         return cell
@@ -88,7 +104,7 @@ class MealTableViewController: UITableViewController {
     }
     
 //////////////////////////////////////////////////////////
-//    SAVING MEALS
+//    SAVING MEALS - LOCALLY
 ////////////////////////////////////////////////////////
     
     private func saveMeals() {
@@ -100,22 +116,13 @@ class MealTableViewController: UITableViewController {
             print("error!!!!")
         }
         
-//        let ctm = CloudTrackerManager()
-//        ctm.postMeal()
     }
     
 //////////////////////////////////////////////////////////
-//    LOADING MEALS
+//    LOADING MEALS - FROM CLOUD TRACKER
 ////////////////////////////////////////////////////////
     
     private func loadMeals()  {
-        
-//        let dataURL = Meal.ArchiveURL
-//        guard let codedData = try? Data(contentsOf: dataURL) else { return }
-//
-//        print("Attempting to load meals")
-//
-//        meals = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Meal] ?? [Meal]()
         
         let ctm = CloudTrackerManager()
         ctm.fetchAllMeals() { (result: String) in
@@ -125,29 +132,6 @@ class MealTableViewController: UITableViewController {
             self.meals = ctm.meals
             print(self.meals.count)
             self.tableView.reloadData()
-            
-            
         }
-
-//        tableView.reloadData()
-        
-//        for meal in meals {
-//            print(meal.name)
-//        }
-//
-//        for meal in json {
-//
-//            let newMeal = Meal(name: meal["title"] as! String, photo: nil, rating: meal["rating"] as! Int, calories: meal["calories"] as! Int, details: meal["description"] as! String)
-//
-//            print("looping")
-//            meals.append(newMeal!)
-//            print("NUMBER OF MEALS IN YOUR ARRAY IS: \(meals.count)")
-////            print(meals)
-//
-//            // initialize a new meal
-//            // then append to meal array
-//        }
-        
     }
-
 }
