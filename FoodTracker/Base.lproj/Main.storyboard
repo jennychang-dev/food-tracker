@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Zro-44-kak">
-                                <rect key="frame" x="20" y="84" width="335" height="486.5"/>
+                                <rect key="frame" x="20" y="84" width="335" height="594.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meal Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vyh-Jn-n3R">
                                         <rect key="frame" x="0.0" y="0.0" width="86.5" height="20.5"/>
@@ -43,8 +43,26 @@
                                             <outletCollection property="gestureRecognizers" destination="Kcm-m4-TmF" appends="YES" id="qHk-Yj-2DQ"/>
                                         </connections>
                                     </imageView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Calories" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SNL-ma-7qb">
+                                        <rect key="frame" x="0.0" y="442.5" width="100" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="J72-iB-lJ5"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="More description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TXD-jk-Nry">
+                                        <rect key="frame" x="0.0" y="496.5" width="200" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="HKm-eq-0Ac"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DJU-ce-jdj" customClass="RatingControl" customModule="FoodTracker" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="442.5" width="252" height="44"/>
+                                        <rect key="frame" x="0.0" y="550.5" width="252" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="250" id="fdA-AD-kgy"/>
                                             <constraint firstAttribute="height" constant="50" id="laf-jN-C8Z"/>
@@ -79,8 +97,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="caloriesField" destination="SNL-ma-7qb" id="C4B-Y8-K9Z"/>
                         <outlet property="foodPicView" destination="zGn-bG-ehw" id="zM2-4Z-BZD"/>
                         <outlet property="mealNameLabel" destination="Vyh-Jn-n3R" id="czJ-SW-Ps0"/>
+                        <outlet property="moreDetails" destination="TXD-jk-Nry" id="1pB-7t-ybn"/>
                         <outlet property="nameTextField" destination="2FJ-30-rVL" id="qqK-HM-aa9"/>
                         <outlet property="ratingControl" destination="DJU-ce-jdj" id="fwM-bQ-b4k"/>
                         <outlet property="saveButton" destination="a0D-Zp-mZl" id="UkO-yj-Mkq"/>

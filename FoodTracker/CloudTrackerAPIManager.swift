@@ -3,6 +3,12 @@ import Foundation
 class CloudTrackerManager {
     
     var request: URLRequest!
+    var totalMeals = [[String: Any]]()
+    var meals = [Meal]()
+    
+    //////////////////////////////////////////////////////////
+    //    COMPILE URL
+    ////////////////////////////////////////////////////////
     
     func compileURLComponents(path: String) -> URL {
         
@@ -11,13 +17,16 @@ class CloudTrackerManager {
         urlComponents.host = "cloud-tracker.herokuapp.com"
         urlComponents.path = path
         
-        
         guard let url = urlComponents.url else {
             fatalError("could not create url from components")
         }
         return url
         
     }
+    
+    //////////////////////////////////////////////////////////
+    //    PERFORM SIGN UP REQUEST
+    ////////////////////////////////////////////////////////
     
     func signUpRequest(username: String, password: String) {
         
@@ -43,11 +52,12 @@ class CloudTrackerManager {
             print("\(error)")
         }
         
+        
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         let task = session.dataTask(with: request) { (responseData, response, responseError) in
             guard responseError == nil else {
-                print("\(responseError)")
+                print("\(String(describing: responseError))")
                 return
             }
             
@@ -73,71 +83,130 @@ class CloudTrackerManager {
         
         task.resume()
         
-}
+    }
     
-    func login() {
+    //////////////////////////////////////////////////////////
+    //    POST THE MEAL TO CLOUD TRACKER
+    ////////////////////////////////////////////////////////
+    
+    func postMeal(meal: Meal) {
         
-    }
-
-func postMeal() {
-    
-    let url = compileURLComponents(path: "/users/me/meals")
-    request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    
-    var headers = request.allHTTPHeaderFields ?? [:]
-    headers = ["token":"C4BaoGmKEiFumUP9ysoDx5cC", "Content-Type": "application/json"]
-    request.allHTTPHeaderFields = headers
-    
-    let bodyData: [String: Any] =
-         [
-            "calories": 500,
-            "description": "funny",
-            "title": "halloooo",
-            "rating": 5
-            ]
-
-    
-    guard let postJSON = try? JSONSerialization.data(withJSONObject: bodyData, options: []) else {
-        print("could not serialize json")
-        return
-    }
-    
-    request.httpBody = postJSON
-    
-    let config = URLSessionConfiguration.default
-    let session = URLSession(configuration: config)
-    let task = session.dataTask(with: request) { (responseData, response, responseError) in
-        guard responseError == nil else {
-            print("\(responseError)")
+        let url = compileURLComponents(path: "/users/me/meals")
+        request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        var headers = request.allHTTPHeaderFields ?? [:]
+        headers = ["token":"C4BaoGmKEiFumUP9ysoDx5cC", "Content-Type": "application/json"]
+        request.allHTTPHeaderFields = headers
+        
+        let bodyData: [String: Any] =
+            [
+                "calories": meal.calories,
+                "description": meal.details,
+                "title": meal.name,
+                "rating": meal.rating
+        ]
+        
+        guard let postJSON = try? JSONSerialization.data(withJSONObject: bodyData, options: []) else {
+            print("could not serialize json")
             return
         }
         
-
-        if let data = responseData, let utf8Representation = String(data: data, encoding: .utf8) {
-            print("response: ", utf8Representation)
-
+        request.httpBody = postJSON
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with: request) { (responseData, response, responseError) in
+            guard responseError == nil else {
+                print("\(String(describing: responseError))")
+                return
+            }
+            
+            
+            if let data = responseData, let utf8Representation = String(data: data, encoding: .utf8) {
+                print("response: ", utf8Representation)
+            }
         }
+        
+        task.resume()
+        print("ATTEMPTING TO PERFORM TASK!!!!")
+        
     }
     
-    task.resume()
-    print("ATTEMPTING TO PERFORM TASK!!!!")
+    //////////////////////////////////////////////////////////
+    //    FETCH ALL MEALS
+    ////////////////////////////////////////////////////////
     
-}
+    func fetchAllMeals(completion: @escaping (_ result: String) -> Void) {
+        
+        let url = compileURLComponents(path: "/users/me/meals")
+        request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        var headers = request.allHTTPHeaderFields ?? [:]
+        headers = ["token":"C4BaoGmKEiFumUP9ysoDx5cC", "Content-Type": "application/json"]
+        request.allHTTPHeaderFields = headers
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with: request) { (responseData, response, responseError) in
+            guard responseError == nil else {
+                print("\(String(describing: responseError))")
+                return
+            }
+            
+            if let data = responseData, let utf8Representation = String(data: data, encoding: .utf8) {
+                
+                print("response: ", utf8Representation)
+            
+                guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]] else {
+                print("data returned is not json")
+                    return
+                }
+                
+                for meal in json {
+                    
+                    let newMeal = Meal(name: meal["title"] as! String, photo: nil, rating: meal["rating"] as! Int, calories: meal["calories"] as! Int, details: meal["description"] as! String)
+                    self.meals.append(newMeal!)
+                    
+                }
+                completion("finished now print...")
 
-func encodeData(bodyData: [String: String]) {
-    let encoder = JSONEncoder()
-    
-    do {
-        let jsonData = try encoder.encode(bodyData)
-        request.httpBody = jsonData
-        print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
-    } catch {
-        print("\(error)")
+            }
+            print("TOTAL NUMBER OF MEALS IS \(self.meals.count)")
+        }
+        
+        task.resume()
+        print("ATTEMPTING TO PERFORM TASK!!!!")
+        
+        
     }
     
-}
+    }
 
+//func takeMyDataAndReturnMeals(json: [[String: Any]]) {
+//
+//    var totalMeals
+//
+//    for meal in json {
+//        print(meal["calories"] ?? 0)
+//    }
+//
+//
+//
+//}
 
+//    func encodeData(bodyData: [String: String]) {
+//        let encoder = JSONEncoder()
+//
+//        do {
+//            let jsonData = try encoder.encode(bodyData)
+//            request.httpBody = jsonData
+//            print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
+//        } catch {
+//            print("\(error)")
+//        }
+//
+//    }
+    
 
-}

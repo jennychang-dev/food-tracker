@@ -10,7 +10,10 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     @IBOutlet weak var foodPicView: UIImageView!
     @IBOutlet weak var ratingControl: RatingControl!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-  
+    @IBOutlet weak var caloriesField: UITextField!
+    @IBOutlet weak var moreDetails: UITextField!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +60,14 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         let name = nameTextField.text ?? ""
         let photo = foodPicView.image
         let rating = ratingControl.rating
+        let calories = caloriesField.text
+        let details = moreDetails.text ?? ""
         
-        meal = Meal(name: name, photo: photo, rating: rating, calories: 200, details: "later", userId: 2, id: 3)
+        let caloriesInt = Int(calories ?? "")
+        
+        meal = Meal(name: name, photo: photo, rating: rating, calories: caloriesInt ?? 0, details: details)
+        let ctm = CloudTrackerManager()
+        ctm.postMeal(meal: meal!)
     }
     
 //////////////////////////////////////////////////////////

@@ -6,6 +6,7 @@ class MealTableViewController: UITableViewController {
     var meals = [Meal]()
     var meal: Meal!
     var data: Data!
+    var json = [[String:Any]]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,6 @@ class MealTableViewController: UITableViewController {
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         
         if let sourceViewController = sender.source as? AddMealViewController, let meal = sourceViewController.meal {
-            
 
             let newIndexPath = IndexPath(row: meals.count, section: 0)
             meals.append(meal)
@@ -88,30 +88,6 @@ class MealTableViewController: UITableViewController {
     }
     
 //////////////////////////////////////////////////////////
-//    loading default
-////////////////////////////////////////////////////////
-/*
-    private func loadSampleMeals() {
-        let photo1 = UIImage(named: "meal1")
-        let photo2 = UIImage(named: "meal2")
-        let photo3 = UIImage(named: "meal3")
-        
-        guard let meal1 = Meal(name: "Caprese salad", photo: photo1, rating: 4) else {
-            fatalError("unable to instantiate meal1")
-        }
-        
-        guard let meal2 = Meal(name: "Chicken and potatoes", photo: photo2, rating: 5) else {
-            fatalError("unable to instantiate meal2")
-        }
-        
-        guard let meal3 = Meal(name: "Pasta with meatballs", photo: photo3, rating: 3) else {
-            fatalError("unable to instantiate meal3")
-        }
-        
-        meals.append(contentsOf: [meal1, meal2, meal3])
-    }
- */
-//////////////////////////////////////////////////////////
 //    SAVING MEALS
 ////////////////////////////////////////////////////////
     
@@ -124,8 +100,8 @@ class MealTableViewController: UITableViewController {
             print("error!!!!")
         }
         
-        let ctm = CloudTrackerManager()
-        ctm.postMeal()
+//        let ctm = CloudTrackerManager()
+//        ctm.postMeal()
     }
     
 //////////////////////////////////////////////////////////
@@ -134,12 +110,43 @@ class MealTableViewController: UITableViewController {
     
     private func loadMeals()  {
         
-        let dataURL = Meal.ArchiveURL
-        guard let codedData = try? Data(contentsOf: dataURL) else { return }
+//        let dataURL = Meal.ArchiveURL
+//        guard let codedData = try? Data(contentsOf: dataURL) else { return }
+//
+//        print("Attempting to load meals")
+//
+//        meals = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Meal] ?? [Meal]()
         
-        print("Attempting to load meals")
+        let ctm = CloudTrackerManager()
+        ctm.fetchAllMeals() { (result: String) in
+            
+            
+            print("got back: \(result)")
+            self.meals = ctm.meals
+            print(self.meals.count)
+            self.tableView.reloadData()
+            
+            
+        }
+
+//        tableView.reloadData()
         
-        meals = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Meal] ?? [Meal]()
+//        for meal in meals {
+//            print(meal.name)
+//        }
+//
+//        for meal in json {
+//
+//            let newMeal = Meal(name: meal["title"] as! String, photo: nil, rating: meal["rating"] as! Int, calories: meal["calories"] as! Int, details: meal["description"] as! String)
+//
+//            print("looping")
+//            meals.append(newMeal!)
+//            print("NUMBER OF MEALS IN YOUR ARRAY IS: \(meals.count)")
+////            print(meals)
+//
+//            // initialize a new meal
+//            // then append to meal array
+//        }
         
     }
 
