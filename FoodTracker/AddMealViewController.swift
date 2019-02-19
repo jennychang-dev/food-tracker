@@ -58,7 +58,7 @@ class AddMealViewController: UIViewController, UITextFieldDelegate, UIImagePicke
         let photo = foodPicView.image
         let rating = ratingControl.rating
         
-        meal = Meal(name: name, photo: photo, rating: rating)
+        meal = Meal(name: name, photo: photo, rating: rating, calories: 200, details: "later", userId: 2, id: 3)
     }
     
 //////////////////////////////////////////////////////////

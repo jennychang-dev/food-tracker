@@ -260,7 +260,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="submitLogin:" destination="Xeu-pS-9uO" eventType="touchUpInside" id="I1E-2u-Dfy"/>
+                                    <action selector="submitLogin:" destination="Xeu-pS-9uO" eventType="touchUpInside" id="Im6-lq-QzF"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -287,12 +287,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tYD-c7-nrb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2246" y="-93"/>
+            <point key="canvasLocation" x="-754" y="-730"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7ls-7H-Cbl">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="a7B-eY-zi4" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigation" automaticallyAdjustsScrollViewInsets="NO" id="a7B-eY-zi4" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="99e-uX-bhT">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>

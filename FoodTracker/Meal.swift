@@ -11,6 +11,10 @@ class Meal: NSObject, NSCoding {
     var name: String
     var photo: UIImage?
     var rating: Int
+    var calories: Int
+    var details: String
+    var userId: Int
+    var id: Int
     
     // marking these constants as static means they belong to the class instead of an instance of the class
     static var DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -20,9 +24,13 @@ class Meal: NSObject, NSCoding {
         static let name = "name"
         static let photo = "photo"
         static let rating = "rating"
+        static let calories = "calories"
+        static let details = "details"
+        static let userId = "userId"
+        static let id = "id"
     }
     
-    init?(name: String, photo: UIImage?, rating: Int) {
+    init?(name: String, photo: UIImage?, rating: Int, calories: Int, details: String, userId: Int, id: Int) {
         
         // adding ! makes means not
         
@@ -37,6 +45,10 @@ class Meal: NSObject, NSCoding {
         self.name = name
         self.photo = photo
         self.rating = rating
+        self.calories = calories
+        self.details = details
+        self.id = id
+        self.userId = userId
     }
     
 //////////////////////////////////////////////////////////
@@ -53,6 +65,10 @@ class Meal: NSObject, NSCoding {
         aCoder.encode(name, forKey: PropertyKey.name)
         aCoder.encode(photo, forKey: PropertyKey.photo)
         aCoder.encode(rating, forKey: PropertyKey.rating)
+        aCoder.encode(calories, forKey: PropertyKey.calories)
+        aCoder.encode(details, forKey: PropertyKey.details)
+        aCoder.encode(userId, forKey: PropertyKey.userId)
+        aCoder.encode(id, forKey: PropertyKey.id)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -65,8 +81,12 @@ class Meal: NSObject, NSCoding {
         
         let photo = aDecoder.decodeObject(forKey: PropertyKey.photo) as? UIImage
         let rating = aDecoder.decodeInteger(forKey: PropertyKey.rating)
+        let calories = aDecoder.decodeInteger(forKey: PropertyKey.calories)
+        let details = aDecoder.decodeObject(forKey: PropertyKey.details) as! String
+        let userId = aDecoder.decodeInteger(forKey: PropertyKey.userId)
+        let id = aDecoder.decodeInteger(forKey: PropertyKey.id)
         
-        self.init(name: name, photo: photo, rating: rating)
+        self.init(name: name, photo: photo, rating: rating, calories: calories, details: details, userId: userId, id: id)
     }
 
 }

@@ -13,6 +13,7 @@ class MealTableViewController: UITableViewController {
         // goes into editing mode on its own!!
         navigationItem.leftBarButtonItem = editButtonItem
         
+        print("attempting to load meals")
         loadMeals()
     }
     
@@ -89,7 +90,7 @@ class MealTableViewController: UITableViewController {
 //////////////////////////////////////////////////////////
 //    loading default
 ////////////////////////////////////////////////////////
-    
+/*
     private func loadSampleMeals() {
         let photo1 = UIImage(named: "meal1")
         let photo2 = UIImage(named: "meal2")
@@ -109,7 +110,7 @@ class MealTableViewController: UITableViewController {
         
         meals.append(contentsOf: [meal1, meal2, meal3])
     }
-    
+ */
 //////////////////////////////////////////////////////////
 //    SAVING MEALS
 ////////////////////////////////////////////////////////
@@ -122,6 +123,9 @@ class MealTableViewController: UITableViewController {
         } catch {
             print("error!!!!")
         }
+        
+        let ctm = CloudTrackerManager()
+        ctm.postMeal()
     }
     
 //////////////////////////////////////////////////////////
@@ -132,6 +136,8 @@ class MealTableViewController: UITableViewController {
         
         let dataURL = Meal.ArchiveURL
         guard let codedData = try? Data(contentsOf: dataURL) else { return }
+        
+        print("Attempting to load meals")
         
         meals = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Meal] ?? [Meal]()
         

@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
         if let username = UserDefaults.standard.object(forKey: "username") {
             
             welcomeLabel.text = "welcome back \(username)"
-            let launchVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mealtable") as? MealTableViewController
+            let launchVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "navigation") as? UINavigationController
             
             present(launchVC!, animated: true, completion: nil)
             
